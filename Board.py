@@ -3,7 +3,7 @@ from sudoku_generator import SudokuGenerator
 from Cell import Cell
 
 LINE_COLOR = (0, 0, 0)
-SQUARE_SIZE = 600
+SQUARE_SIZE = 630
 LINE_WIDTH_THICK = 6
 LINE_WIDTH_THIN = 2
 
@@ -15,7 +15,7 @@ class Board:
         self.screen = screen
         self.difficulty = difficulty
         self.selected = None
-        self.board = [[0 for i in range (9)] for j in range (9)]
+        self.board = [[Cell(0, i, j, self.screen) for i in range (9)] for j in range (9)]
 
     def draw(self):
 
@@ -90,14 +90,18 @@ class Board:
             )
 
     def select(self, row, col):
-        pass
-
+        self.board[row][col].selected = True
+        self.selected.selct
+        self.draw()
 
 
     def click(self, row, col):
-        pass
-
-
+        if row <= self.width and col <= self.height:
+            click_x = row // (SQUARE_SIZE // 9)
+            click_y = col // (SQUARE_SIZE // 9)
+            return row, col
+        else:
+            return None
 
     def clear(self):
         #only filled by player
@@ -116,5 +120,11 @@ class Board:
 
 
     def reset_to_original(self):
-        pass
+        for i in range(9):
+            for j in range (9):
+                if self.board[i][j].selected:
+                    self.board[i][j].set_sketched_value(0)
+                    self.board[i][j].set_cell_value(0)
+
+
 
