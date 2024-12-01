@@ -14,7 +14,7 @@ class Board:
         self.height = height
         self.screen = screen
         self.difficulty = difficulty
-        self.selected = None
+        self.selected_one = None
         self.board = [[Cell(0, i, j, self.screen) for i in range (9)] for j in range (9)]
 
     def draw(self):
@@ -91,7 +91,7 @@ class Board:
 
     def select(self, row, col):
         self.board[row][col].selected = True
-        self.selected.selct
+        self.selected.select()
         self.draw()
 
 
@@ -125,6 +125,9 @@ class Board:
                 if self.board[i][j].selected:
                     self.board[i][j].set_sketched_value(0)
                     self.board[i][j].set_cell_value(0)
+
+
+
 
 
 
