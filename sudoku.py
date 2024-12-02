@@ -121,16 +121,16 @@ def main():
                     r = board.selected_one.row
                     c = board.selected_one.col
                     if event.key == pygame.K_RIGHT:
-                        if r != 8:
+                        if c != 8:
                             board.select(r, c+1)
                     elif event.key == pygame.K_LEFT:
-                        if board.selected_one.row != 0:
+                        if c != 0:
                             board.select(r, c-1)
                     elif event.key == pygame.K_UP:
-                        if board.selected_one.row != 0:
+                        if r != 0:
                             board.select(r-1, c)
                     elif event.key == pygame.K_DOWN:
-                        if board.selected_one.row != 8:
+                        if r != 8:
                             board.select(r+1, c)
 
 
