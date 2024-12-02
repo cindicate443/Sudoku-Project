@@ -97,10 +97,11 @@ def main():
                     pygame.quit()
                     sys.exit()
 
-            game_success = False
-            game_over_action = game_over_screen(game_success)
-            if game_over_action == "restart":
-                playing = False
+
+            # game_success = False
+            # game_over_action = game_over_screen(game_success)
+            # if game_over_action == "restart":
+            #     playing = False
 
 
 if __name__ == "__main__":

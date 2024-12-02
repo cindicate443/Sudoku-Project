@@ -57,7 +57,7 @@ class Board:
                 (i* SQUARE_SIZE // 9, 0),
                 (i * SQUARE_SIZE // 9, self.height),
                 LINE_WIDTH_THICK
-                )
+            )
     #horizontal
         for i in range(1,3):
             pygame.draw.line(
@@ -74,7 +74,7 @@ class Board:
                 (0, i * SQUARE_SIZE // 9),
                 (self.width, i * SQUARE_SIZE // 9),
                 LINE_WIDTH_THIN
-                )
+            )
         for i in range(7, 9):
             pygame.draw.line(
                 self.screen,
@@ -82,7 +82,7 @@ class Board:
                 (0, i * SQUARE_SIZE // 9),
                 (self.width, i * SQUARE_SIZE // 9),
                 LINE_WIDTH_THIN
-                )
+            )
         for i in [3, 6, 9]:
             pygame.draw.line(
                 self.screen,
@@ -94,7 +94,7 @@ class Board:
 
     def select(self, row, col):
         self.board[row][col].selected = True
-        self.selected.select()
+        self.selected_one.select()
         self.draw()
 
 
@@ -102,24 +102,24 @@ class Board:
         if 0<= row <= self.width and 0<= col <= self.height:
             click_x = row // (SQUARE_SIZE // 9)
             click_y = col // (SQUARE_SIZE // 9)
-            return row, col
+            return click_x, click_y
         else:
             return None
 
     def clear(self):
         #only filled by player
-        if self.selected:
-            self.selected.set_cell_value(0)
+        if self.selected_one:
+            self.selected_one.set_cell_value(0)
 
     def sketch(self, value):
-        if self.selected:
-            self.selected.set_sketched_value(value)
+        if self.selected_one:
+            self.selected_one.set_sketched_value(value)
 
 
     def place_number(self, value):
         #only if event.key == pygame.K_enter
-        if self.selected:
-            self.selected.set_cell_value(value)
+        if self.selected_one:
+            self.selected_one.set_cell_value(value)
 
 
     def reset_to_original(self):
@@ -144,7 +144,7 @@ class Board:
         for i in range(len(self.board)):
             for j in range(len(self.board[i])):
                 if self.board[i][j].value == 0:
-                    return (i, j)
+                    return i, j
         return -1
 
     def check_board(self):
