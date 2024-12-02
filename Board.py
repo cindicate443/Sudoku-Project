@@ -99,7 +99,7 @@ class Board:
 
 
     def click(self, row, col):
-        if row <= self.width and col <= self.height:
+        if 0<= row <= self.width and 0<= col <= self.height:
             click_x = row // (SQUARE_SIZE // 9)
             click_y = col // (SQUARE_SIZE // 9)
             return row, col
@@ -132,7 +132,7 @@ class Board:
     def is_full(self):
         for i in self.board:
             for j in i:
-                if board[i][j].value == 0:
+                if self.board[i][j].value == 0:
                     return False
         return True
 

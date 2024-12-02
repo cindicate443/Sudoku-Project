@@ -1,6 +1,6 @@
 import pygame
 import sys
-from board import Board
+from Board import Board
 
 
 SCREEN_WIDTH = 630
