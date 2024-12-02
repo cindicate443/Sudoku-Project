@@ -1,5 +1,5 @@
 import pygame, sys
-from sudoku_generator import SudokuGenerator
+from sudoku_generator import *
 from Cell import Cell
 
 LINE_COLOR = (0, 0, 0)
@@ -15,20 +15,17 @@ class Board:
         self.screen = screen
         self.difficulty = difficulty
         self.selected_one = None
-        self.board = [[Cell(0, i, j, self.screen) for i in range (9)] for j in range (9)]
+        self.answer = generate_sudoku(9, {"easy":30,"medium":40,"hard":50}[difficulty])
+        self.board = [[Cell(self.answer[i][j], i, j, self.screen) for i in range (9)] for j in range (9)]
 
     def draw(self):
-    #sketch values
-        for row in self.board:
-            for val in row:
-                val.draw()
-    #vertical
+        #vertical
         for i in range (1,3):
             pygame.draw.line(
                 self.screen,
                 LINE_COLOR,
                 (i* SQUARE_SIZE // 9, 0),
-                (i * SQUARE_SIZE // 9, self.height),
+                (i * SQUARE_SIZE // 9, self.height-90),
                 LINE_WIDTH_THIN
             )
 
@@ -37,7 +34,7 @@ class Board:
                 self.screen,
                 LINE_COLOR,
                 (i * SQUARE_SIZE // 9, 0),
-                (i * SQUARE_SIZE // 9, self.height),
+                (i * SQUARE_SIZE // 9, self.height-90),
                 LINE_WIDTH_THIN
             )
 
@@ -46,7 +43,7 @@ class Board:
                 self.screen,
                 LINE_COLOR,
                 (i * SQUARE_SIZE // 9, 0),
-                (i * SQUARE_SIZE // 9, self.height),
+                (i * SQUARE_SIZE // 9, self.height-90),
                 LINE_WIDTH_THIN
             )
 
@@ -91,56 +88,81 @@ class Board:
                 (self.width, i * SQUARE_SIZE // 9),
                 LINE_WIDTH_THICK
             )
+        # CELLS
+        for row in self.board:
+            for val in row:
+                val.draw()
+        # RESET
+        font = pygame.font.Font(None, 60)
+        text = font.render("RESET", True, (0, 0, 0))
+        text_rect = text.get_rect(topleft=(30, self.height-60))
+        self.screen.blit(text, text_rect)
+
+        # RESTART
+        font = pygame.font.Font(None, 60)
+        text = font.render("RESTART", True, (0, 0, 0))
+        text_rect = text.get_rect(topleft=(220, self.height - 60))
+        self.screen.blit(text, text_rect)
+
+        # EXIT
+        font = pygame.font.Font(None, 60)
+        text = font.render("EXIT", True, (0, 0, 0))
+        text_rect = text.get_rect(topleft=(475, self.height - 60))
+        self.screen.blit(text, text_rect)
+
+
 
     def select(self, row, col):
-        if self.selected_one:
+        if self.selected_one is not None:
+            # Deselect previous selection
             self.selected_one.selected = False
+        self.board[row][col].selected = True
         self.selected_one = self.board[row][col]
-        self.selected_one.selected = True
         self.draw()
 
 
     def click(self, row, col):
         if 0<= row <= self.width and 0<= col <= self.height:
             click_x = row // (SQUARE_SIZE // 9)
-            click_y = col // (SQUARE_SIZE // 9)
+            click_y = col // (self.height // 10)
             return click_x, click_y
         else:
             return None
 
     def clear(self):
         #only filled by player
-        if self.selected_one:
+        if self.answer[self.selected_one.row][self.selected_one.col] != 0:
+            return
+        if self.selected_one is not None:
             self.selected_one.set_cell_value(0)
+            self.selected_one.set_sketched_value(0)
 
     def sketch(self, value):
-        if self.selected_one:
+        if self.selected_one is not None:
             self.selected_one.set_sketched_value(value)
 
 
-    def place_number(self, value):
-        #only if event.key == pygame.K_return
-        if self.selected_one and self.selected_one.sketched != 0:
+    def place_number(self):
+        #only if event.key == pygame.K_enter
+        if self.answer[self.selected_one.row][self.selected_one.col] != 0:
+            return
+        if self.selected_one:
             self.selected_one.set_cell_value(self.selected_one.sketched)
 
 
-
     def reset_to_original(self):
-        for i in range(9):
-            for j in range (9):
-                if self.board[i][j].selected:
-                    self.board[i][j].set_sketched_value(0)
-                    self.board[i][j].set_cell_value(0)
+        self.board = [[Cell(self.answer[i][j], i, j, self.screen) for i in range(9)] for j in range(9)]
+        self.draw()
 
     def is_full(self):
         for i in self.board:
             for j in i:
-                if self.board[i][j].value == 0:
+                if j.value == 0:
                     return False
         return True
 
     def update_board(self):
-        # isn't the board continuously updating? 
+        # isn't the board continuously updating?
         pass
 
     def find_empty(self):
@@ -179,9 +201,3 @@ class Board:
                 if i.count(j) > 1:
                     return False
         return True
-
-
-
-
-
-
