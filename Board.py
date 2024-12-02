@@ -15,8 +15,8 @@ class Board:
         self.screen = screen
         self.difficulty = difficulty
         self.selected_one = None
-        self.answer = generate_sudoku(9, {"easy":30,"medium":40,"hard":50}[difficulty])
-        self.board = [[Cell(self.answer[i][j], i, j, self.screen) for i in range (9)] for j in range (9)]
+        self.original = generate_sudoku(9, {"easy":30,"medium":40,"hard":50}[difficulty])
+        self.board = [[Cell(self.original[i][j], i, j, self.screen) for i in range (9)] for j in range (9)]
 
     def draw(self):
         #vertical
@@ -131,7 +131,8 @@ class Board:
 
     def clear(self):
         #only filled by player
-        if self.answer[self.selected_one.row][self.selected_one.col] != 0:
+        # cannot change preset cells
+        if self.original[self.selected_one.row][self.selected_one.col] != 0:
             return
         if self.selected_one is not None:
             self.selected_one.set_cell_value(0)
@@ -144,7 +145,8 @@ class Board:
 
     def place_number(self):
         #only if event.key == pygame.K_enter
-        if self.answer[self.selected_one.row][self.selected_one.col] != 0:
+        # cannot change preset cells
+        if self.original[self.selected_one.row][self.selected_one.col] != 0:
             return
         if self.selected_one:
             self.selected_one.set_cell_value(self.selected_one.sketched)
@@ -161,9 +163,9 @@ class Board:
                     return False
         return True
 
+    # not sure about this
     def update_board(self):
-        # isn't the board continuously updating?
-        pass
+        self.draw()
 
     def find_empty(self):
         for i in range(len(self.board)):
