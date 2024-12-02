@@ -2,20 +2,18 @@ import pygame
 import sys
 from Board import Board
 
-
 SCREEN_WIDTH = 630
 SCREEN_HEIGHT = 630
 BACKGROUND_COLOR = (255, 255, 255)
 FONT_COLOR = (0, 0, 0)
-
 
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Sudoku")
 font = pygame.font.Font(None, 40)
 
+
 def start_screen():
-   
     screen.fill(BACKGROUND_COLOR)
     title = font.render("Welcome to Sudoku!", True, FONT_COLOR)
     easy_button = font.render("Easy", True, FONT_COLOR)
@@ -46,8 +44,8 @@ def start_screen():
 
     return difficulty
 
+
 def game_over_screen(success):
-    
     screen.fill(BACKGROUND_COLOR)
     if success:
         message = font.render("Congratulations, You Won!", True, FONT_COLOR)
@@ -75,20 +73,19 @@ def game_over_screen(success):
                     pygame.quit()
                     sys.exit()
 
+
 def main():
-   """ Main function to run the Sudoku game."""
+    """ Main function to run the Sudoku game."""
     running = True
+
     while running:
-       
+
         difficulty = start_screen()
-        
-       
+
         removed_cells = {"easy": 30, "medium": 40, "hard": 50}.get(difficulty, 30)
 
-        
         board = Board(SCREEN_WIDTH, SCREEN_HEIGHT, screen, difficulty)
-        
-       
+
         playing = True
         while playing:
             screen.fill(BACKGROUND_COLOR)
@@ -99,12 +96,12 @@ def main():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                    
-            
+
             game_success = False
             game_over_action = game_over_screen(game_success)
             if game_over_action == "restart":
                 playing = False
+
 
 if __name__ == "__main__":
     main()
