@@ -135,7 +135,7 @@ class Board:
     def is_full(self):
         for i in self.board:
             for j in i:
-                if self.board[i][j].value == 0:
+                if j.value == 0:
                     return False
         return True
 
