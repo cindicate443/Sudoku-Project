@@ -42,6 +42,6 @@ class Cell:
             self.screen.blit(text, text_rect)
         elif self.sketched != 0:
             font = pygame.font.Font(None, 28)
-            text = font.render(str(self.value), True, (169, 169, 169))
+            text = font.render(str(self.sketched), True, (169, 169, 169))
             text_rect = text.get_rect(topleft=(top_left[0]+10, top_left[1]+10))
             self.screen.blit(text, text_rect)

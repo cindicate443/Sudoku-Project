@@ -93,9 +93,10 @@ class Board:
             )
 
     def select(self, row, col):
+        if self.selected_one:
+            self.selected_one.selected = False
         self.selected_one = self.board[row][col]
         self.selected_one.selected = True
-        self.selected_one.select()
         self.draw()
 
 
@@ -118,9 +119,10 @@ class Board:
 
 
     def place_number(self, value):
-        #only if event.key == pygame.K_enter
-        if self.selected_one:
-            self.selected_one.set_cell_value(value)
+        #only if event.key == pygame.K_return
+        if self.selected_one and self.selected_one.sketched != 0:
+            self.selected_one.set_cell_value(self.selected_one.sketched)
+
 
 
     def reset_to_original(self):
