@@ -93,8 +93,10 @@ class Board:
             )
 
     def select(self, row, col):
+        if selected_one != None:
+            self.selected_one.selected = False
         self.board[row][col].selected = True
-        self.selected_one.select()
+        self.selected_one = self.board[row][col]
         self.draw()
 
 
