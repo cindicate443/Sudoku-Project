@@ -110,11 +110,12 @@ class Board:
 
     def clear(self):
         #only filled by player
-        if self.selected_one:
+        if self.selected_one is not None:
             self.selected_one.set_cell_value(0)
+            self.selected_one.set_sketched_value(0)
 
     def sketch(self, value):
-        if self.selected_one:
+        if self.selected_one is not none:
             self.selected_one.set_sketched_value(value)
 
 
