@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame
 from sudoku_generator import *
 from Cell import Cell
 
@@ -15,8 +15,8 @@ class Board:
         self.screen = screen
         self.difficulty = difficulty
         self.selected_one = None
-        self.original = generate_sudoku(9, {"easy":30,"medium":40,"hard":50}[difficulty])
-        self.board = [[Cell(self.original[i][j], i, j, self.screen) for i in range (9)] for j in range (9)]
+        self.answer = generate_sudoku(9, {"easy":30,"medium":40,"hard":50}[difficulty])
+        self.board = [[Cell(self.answer[i][j], i, j, self.screen) for i in range (9)] for j in range (9)]
 
     def draw(self):
         #vertical
@@ -116,8 +116,8 @@ class Board:
         if self.selected_one is not None:
             # Deselect previous selection
             self.selected_one.selected = False
-        self.board[row][col].selected = True
-        self.selected_one = self.board[row][col]
+        self.board[col][row].selected = True
+        self.selected_one = self.board[col][row]
         self.draw()
 
 
@@ -131,8 +131,7 @@ class Board:
 
     def clear(self):
         #only filled by player
-        # cannot change preset cells
-        if self.original[self.selected_one.row][self.selected_one.col] != 0:
+        if self.answer[self.selected_one.row][self.selected_one.col] != 0:
             return
         if self.selected_one is not None:
             self.selected_one.set_cell_value(0)
@@ -145,8 +144,7 @@ class Board:
 
     def place_number(self):
         #only if event.key == pygame.K_enter
-        # cannot change preset cells
-        if self.original[self.selected_one.row][self.selected_one.col] != 0:
+        if self.answer[self.selected_one.row][self.selected_one.col] != 0:
             return
         if self.selected_one:
             self.selected_one.set_cell_value(self.selected_one.sketched)
@@ -163,9 +161,9 @@ class Board:
                     return False
         return True
 
-    # not sure about this
     def update_board(self):
-        self.draw()
+        # isn't the board continuously updating?
+        pass
 
     def find_empty(self):
         for i in range(len(self.board)):
