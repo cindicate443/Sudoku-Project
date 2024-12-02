@@ -1,9 +1,6 @@
 import pygame
 
 class Cell:
-    ## fill in digits with images when style is decided
-    digits = {}
-
 
     def __init__(self, value, row, col, screen):
         self.value = value
@@ -26,7 +23,7 @@ class Cell:
         width = self.screen.get_width()
         length = self.screen.get_height()
         cell_w = width / 9
-        cell_l = length / 9
+        cell_l = (length-90) / 9
         top_left = (self.col*cell_w, self.row*cell_l)
         # self.screen.blit(self.digits[self.value], self.digits[self.value].get_rect(topleft=top_left))
         if self.selected:
