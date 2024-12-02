@@ -126,6 +126,54 @@ class Board:
                     self.board[i][j].set_sketched_value(0)
                     self.board[i][j].set_cell_value(0)
 
+    def is_full(self):
+        for i in self.board:
+            for j in i:
+                if board[i][j].value == 0:
+                    return False
+        return True
+
+    def update_board(self):
+        # isn't the board continuously updating? 
+        pass
+
+    def find_empty(self):
+        for i in range(len(self.board)):
+            for j in range(len(self.board[i])):
+                if self.board[i][j].value == 0:
+                    return (i, j)
+        return -1
+
+    def check_board(self):
+        if not self.is_full():
+            return False
+        #rows
+        for i in self.board:
+            vals = [k.value for k in i]
+            for j in vals:
+                if vals.count(j) > 1:
+                    return False
+        #cols
+        board_t = [[r[i].value for r in self.board] for i in range(9)]
+        for i in board_t:
+            for j in i:
+                if i.count(j) > 1:
+                    return False
+        #boxes
+        boxes = []
+        for box_row in range(0, 9, 3):
+            for box_col in range(0, 9, 3):
+                box = []
+                for i in range(3):
+                    for j in range(3):
+                        box.append(self.board[box_row + i][box_col + j].value)
+                boxes.append(box)
+        for i in boxes:
+            for j in i:
+                if i.count(j) > 1:
+                    return False
+        return True
+
 
 
 
