@@ -93,10 +93,9 @@ class Board:
             )
 
     def select(self, row, col):
-        if self.selected_one is not None:
-            self.selected_one.selected = False
-        self.board[row][col].selected = True
         self.selected_one = self.board[row][col]
+        self.selected_one.selected = True
+        self.selected_one.select()
         self.draw()
 
 
@@ -110,12 +109,11 @@ class Board:
 
     def clear(self):
         #only filled by player
-        if self.selected_one is not None:
+        if self.selected_one:
             self.selected_one.set_cell_value(0)
-            self.selected_one.set_sketched_value(0)
 
     def sketch(self, value):
-        if self.selected_one is not none:
+        if self.selected_one:
             self.selected_one.set_sketched_value(value)
 
 
@@ -135,7 +133,7 @@ class Board:
     def is_full(self):
         for i in self.board:
             for j in i:
-                if j.value == 0:
+                if self.board[i][j].value == 0:
                     return False
         return True
 
