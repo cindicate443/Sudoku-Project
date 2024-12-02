@@ -1,10 +1,12 @@
 import pygame
 import sys
 
+from pygame import K_RETURN, K_BACKSPACE
+
 from Board import Board
 
 SCREEN_WIDTH = 630
-SCREEN_HEIGHT = 630
+SCREEN_HEIGHT = 720
 BACKGROUND_COLOR = (255, 255, 255)
 FONT_COLOR = (0, 0, 0)
 
@@ -75,6 +77,7 @@ def game_over_screen(success):
                     sys.exit()
 
 
+
 def main():
     """ Main function to run the Sudoku game."""
     running = True
@@ -97,44 +100,42 @@ def main():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    x, y = event.pos
-                    row = x // (SCREEN_HEIGHT // 9)
-                    col = y // (SCREEN_WIDTH // 9)
-                    board.select(row, col)
+                    x,y = event.pos
+                    cell_x, cell_y = board.click(x,y)
+                    # BUTTONS
+                    if cell_y == 9:
+                        # RESET
+                        if cell_x < 3:
+                            board.reset_to_original()
+                        # RESTART
+                        elif cell_x < 6:
+                            main()
+                        # EXIT
+                        else:
+                            quit()
+                    else:
+                        board.select(cell_x,cell_y)
 
                 if event.type == pygame.KEYDOWN:
-                    if board.selected_one:
-                        if event.key == pygame.K_1:
-                            board.sketch(1)
-                        elif event.key == pygame.K_2:
-                            board.sketch(2)
-                        elif event.key == pygame.K_3:
-                            board.sketch(3)
-                        elif event.key == pygame.K_4:
-                            board.sketch(4)
-                        elif event.key == pygame.K_5:
-                            board.sketch(5)
-                        elif event.key == pygame.K_6:
-                            board.sketch(6)
-                        elif event.key == pygame.K_7:
-                            board.sketch(7)
-                        elif event.key == pygame.K_8:
-                            board.sketch(8)
-                        elif event.key == pygame.K_9:
-                            board.sketch(9)
+                    # Enter
+                    if event.key == K_RETURN:
+                        board.place_number()
+                    # Backspace
+                    elif event.key == K_BACKSPACE:
+                        board.clear()
+                    # Numbers
+                    key_to_num = {pygame.K_1: 1, pygame.K_2: 2, pygame.K_3: 3, pygame.K_4: 4, pygame.K_5: 5,
+                                  pygame.K_6: 6, pygame.K_7: 7, pygame.K_8: 8, pygame.K_9: 9}
+                    value = key_to_num.get(event.key, 0) # 0 if random key is pressed
+                    board.sketch(value)
 
-                        elif event.type == pygame.K_RETURN:
-                            board.place_number()
-
-
-
-
-            # game_success = False
-            # game_over_action = game_over_screen(game_success)
-            # if game_over_action == "restart":
-            #     playing = False
+            # Win Checking
+            if board.is_full():
+                game_success = board.check_board()
+                game_over_action = game_over_screen(game_success)
+                if game_over_action == "restart":
+                    main()
 
 
 if __name__ == "__main__":
