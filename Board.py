@@ -18,7 +18,10 @@ class Board:
         self.board = [[Cell(0, i, j, self.screen) for i in range (9)] for j in range (9)]
 
     def draw(self):
-
+    #sketch values
+        for row in self.board:
+            for val in row:
+                val.sketch()
     #vertical
         for i in range (1,3):
             pygame.draw.line(
