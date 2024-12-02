@@ -21,7 +21,7 @@ class Board:
     #sketch values
         for row in self.board:
             for val in row:
-                val.sketch()
+                val.draw()
     #vertical
         for i in range (1,3):
             pygame.draw.line(
