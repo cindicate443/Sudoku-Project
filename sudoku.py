@@ -102,22 +102,38 @@ def main():
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     x,y = event.pos
-                    cell_x, cell_y = board.click(x,y)
+                    cell_col, cell_row = board.click(x,y)
                     # BUTTONS
-                    if cell_y == 9:
+                    if cell_row == 9:
                         # RESET
-                        if cell_x < 3:
+                        if cell_col < 3:
                             board.reset_to_original()
                         # RESTART
-                        elif cell_x < 6:
+                        elif cell_col < 6:
                             main()
                         # EXIT
                         else:
                             quit()
                     else:
-                        board.select(cell_x,cell_y)
+                        board.select(cell_row, cell_col)
 
                 if event.type == pygame.KEYDOWN:
+                    r = board.selected_one.row
+                    c = board.selected_one.col
+                    if event.key == pygame.K_RIGHT:
+                        if r != 8:
+                            board.select(r, c+1)
+                    elif event.key == pygame.K_LEFT:
+                        if board.selected_one.row != 0:
+                            board.select(r, c-1)
+                    elif event.key == pygame.K_UP:
+                        if board.selected_one.row != 0:
+                            board.select(r-1, c)
+                    elif event.key == pygame.K_DOWN:
+                        if board.selected_one.row != 8:
+                            board.select(r+1, c)
+
+
                     # Enter
                     if event.key == K_RETURN:
                         board.place_number()
