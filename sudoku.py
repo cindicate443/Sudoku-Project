@@ -118,33 +118,35 @@ def main():
                         board.select(cell_row, cell_col)
 
                 if event.type == pygame.KEYDOWN:
-                    r = board.selected_one.row
-                    c = board.selected_one.col
-                    if event.key == pygame.K_RIGHT:
-                        if c != 8:
-                            board.select(r, c+1)
-                    elif event.key == pygame.K_LEFT:
-                        if c != 0:
-                            board.select(r, c-1)
-                    elif event.key == pygame.K_UP:
-                        if r != 0:
-                            board.select(r-1, c)
-                    elif event.key == pygame.K_DOWN:
-                        if r != 8:
-                            board.select(r+1, c)
+                    if board.selected_one is not None:
+
+                        r = board.selected_one.row
+                        c = board.selected_one.col
+                        if event.key == pygame.K_RIGHT:
+                            if c != 8:
+                                board.select(r, c+1)
+                        elif event.key == pygame.K_LEFT:
+                            if c != 0:
+                                board.select(r, c-1)
+                        elif event.key == pygame.K_UP:
+                            if r != 0:
+                                board.select(r-1, c)
+                        elif event.key == pygame.K_DOWN:
+                            if r != 8:
+                                board.select(r+1, c)
 
 
                     # Enter
-                    if event.key == K_RETURN:
-                        board.place_number()
-                    # Backspace
-                    elif event.key == K_BACKSPACE:
-                        board.clear()
-                    # Numbers
-                    key_to_num = {pygame.K_1: 1, pygame.K_2: 2, pygame.K_3: 3, pygame.K_4: 4, pygame.K_5: 5,
-                                  pygame.K_6: 6, pygame.K_7: 7, pygame.K_8: 8, pygame.K_9: 9}
-                    value = key_to_num.get(event.key, 0) # 0 if random key is pressed
-                    board.sketch(value)
+                        if event.key == K_RETURN:
+                            board.place_number()
+                        # Backspace
+                        elif event.key == K_BACKSPACE:
+                            board.clear()
+                        # Numbers
+                        key_to_num = {pygame.K_1: 1, pygame.K_2: 2, pygame.K_3: 3, pygame.K_4: 4, pygame.K_5: 5,
+                                      pygame.K_6: 6, pygame.K_7: 7, pygame.K_8: 8, pygame.K_9: 9}
+                        value = key_to_num.get(event.key, 0) # 0 if random key is pressed
+                        board.sketch(value)
 
             # Win Checking
             if board.is_full():
